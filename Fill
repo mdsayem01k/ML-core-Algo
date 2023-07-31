@@ -1,0 +1,837 @@
+Additive
+#include<bits/stdc++.h>
+using namespace std;
+
+string en(string p, int k);
+string de(string c, int k);
+int inverse(int k);
+int main(){
+    freopen("Input.txt","r",stdin);
+    string plain;
+    cin>>plain;
+
+    int k;
+    cin>>k;
+
+    string cipher=en(plain,k);
+    cout<<"CipherText: " <<cipher<<"\n";
+    string decipher=de(cipher,k);
+    cout<<"DecipherText: " << decipher <<"\n";
+
+    return 0;
+
+}
+
+int inverse(int k){
+
+    for(int i=0;i<26;i++){
+        if((k*i)%26==1){
+            return i;
+        }
+    }
+    return -1;
+}
+
+string en(string p,int k){
+    string c="";
+
+    for(int i=0;i<p.size();i++){
+        c+=((p[i]-'a')*k)%26+'A';
+    }
+    return c;
+
+}
+string de(string c,int k){
+    string d="";
+    int k_in=inverse(k);
+    for(int i=0;i<c.size();i++){
+        d+=((c[i]+'A')*k_in)%26+'a';
+    }
+    return d;
+
+}
+
+
+
+
+
+
+Aaaaaaffine
+#include<bits/stdc++.h>
+using namespace std;
+
+string en(string p, int k1,int k2);
+string de(string c, int k1,int k2);
+int inverse(int k);
+int main(){
+    freopen("Input.txt","r",stdin);
+    string plain;
+    cin>>plain;
+
+    int k1,k2;
+    cin>>k1 >> k2;
+    if(inverse(k1)==-1){
+        cout<<"K1 have no Inverse";
+    }
+
+    string cipher=en(plain,k1,k2);
+    cout<<"CipherText: " <<cipher<<"\n";
+    string decipher=de(cipher,k1,k2);
+    cout<<"DecipherText: " << decipher <<"\n";
+
+    return 0;
+
+}
+
+int inverse(int k){
+
+    for(int i=0;i<26;i++){
+        if((k*i)%26==1){
+            return i;
+        }
+    }
+    return -1;
+}
+
+string en(string p,int k1, int k2){
+    string c="";
+
+    for(int i=0;i<p.size();i++){
+        c+=(((p[i]-'a')*k1)+k2)%26+'A';
+    }
+    return c;
+
+}
+string de(string c,int k1,int k2){
+    string d="";
+    int k_in=inverse(k1);
+    for(int i=0;i<c.size();i++){
+        d+=(((c[i]+'A')-k2)*k_in)%26+'a';
+    }
+    return d;
+
+}
+
+
+
+Autokey
+#include<bits/stdc++.h>
+using namespace std;
+
+string en(string p, int k);
+string de(string p,string c, int k);
+int inverse(int k);
+int main(){
+    freopen("Input.txt","r",stdin);
+    string plain;
+    cin>>plain;
+
+    int k;
+    cin>>k;
+
+    string cipher=en(plain,k);
+    cout<<"CipherText: " <<cipher<<"\n";
+    string decipher=de(plain,cipher,k);
+    cout<<"DecipherText: " << decipher <<"\n";
+
+    return 0;
+
+}
+
+int inverse(int k){
+
+    for(int i=0;i<26;i++){
+        if((k*i)%26==1){
+            return i;
+        }
+    }
+    return -1;
+}
+
+string en(string p,int k){
+    string c="";
+    int k1[30];
+    k1[0]=k;
+    for(int i=1; i<p.size();i++){
+        k1[i]=p[i-1]-'a';
+        cout<<i <<"-" <<k1[i-1] <<" " ;
+
+    }
+
+
+    for(int i=0;i<p.size();i++){
+        c+=((p[i]-'a')+k1[i])%26+'A';
+    }
+    return c;
+
+}
+string de(string p,string c,int n){
+    string d="";
+    int k[30];
+    k[0]=n;
+    for(int i=1; i<p.size();i++){
+        k[i]=(p[i-1]-'a');
+    }
+
+
+
+    for(int i=0;i<c.size();i++){
+        d+=((c[i]+'A')-k[i])%26+'a';
+    }
+    return d;
+
+}
+
+Monosub
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+ string Plaintext, cipher, decipher,ResultPlaintext;
+ int i,j;
+ cout<<"Input Your PlainText String: ";
+ getline(cin, Plaintext);
+
+ char pt[26]= {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
+ char key[26]={'N','O','A','T','R','B','E','C','F','U','X','D','Q','G','Y','L','K','H','V','I','J','M','P','Z','S','W'};
+ cout<<"Encrypted message: ";
+ for(j=0;j<Plaintext.size();j++){
+    for(i=0;i<26;i++){
+        if(pt[i]==Plaintext[j]){
+            break;
+        }
+    }
+    cipher+=key[i];
+ }
+ cout<<cipher<<"\n";
+ cout<<"Dencrypted message: ";
+ for(j=0;j<cipher.size();j++){
+    for(i=0;i<26;i++){
+        if(key[i]==cipher[j]){
+            break;
+        }
+    }
+    cout<<pt[i];
+ }
+
+}
+
+
+Vigener-
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+    string plain,key,cipher,decipher;
+    int i,n,k,m,j=0;
+    cout<<"enter Plain text: ";
+    cin>>plain;
+    cout<<"enter Kwy: ";
+    cin >>key;
+    n=plain.size();
+    m=key.size();
+    int arr[n];
+    for(i=0;i<n &&j<m;i++){
+       arr[i]=key[j]-'a';
+       j++;
+       if(j>=m){
+        j=0;
+       }
+    }
+
+    cout<<"the cipher text: ";
+    for(i=0;i<n;i++){
+        cipher+=(plain[i]-'a'+arr[i])%26+'A';
+    }
+    cout<<cipher <<"\n";
+
+    cout<<"decipher: ";
+    for(i=0;i<n;i++){
+        decipher+=(cipher[i]+'A'-arr[i])%26+'a';
+    }
+    cout<<decipher;
+
+}
+
+Keyless
+#include<bits/stdc++.h>
+using namespace std;
+
+string encryptMessage(string msg)
+{
+	string cipher = "";
+
+	for(int i=0; i<msg.size(); i+=2)
+        cipher += msg[i];
+
+    for(int i=1; i<msg.size(); i+=2)
+        cipher += msg[i];
+
+    transform(cipher.begin(), cipher.end(), cipher.begin(), ::toupper);
+
+    return cipher;
+
+}
+
+string decryptMessage(string cipher)
+{
+    string decipher = "";
+    int n = cipher.size();
+    if(n%2!=0){
+         for(int i=0, j=n/2+1; i<n/2; i++, j++)
+        {
+            decipher += cipher[i];
+            decipher += cipher[j];
+        }
+    }
+    
+   
+    if(n % 2 != 0)
+        decipher += cipher[n/2];
+
+    transform(decipher.begin(), decipher.end(), decipher.begin(), ::tolower);
+
+    return decipher;
+}
+int main()
+{
+	string msg;
+	cout << "Enter the plainText: ";
+	cin >> msg;
+
+	string cipher = encryptMessage(msg);
+	cout << "The cipherText is: " << cipher << endl;
+
+	cout << "The decipherText is: " << decryptMessage(cipher) << endl;
+
+	return 0;
+}
+
+
+Key lesss
+#include<stdio.h>
+#include<string.h>
+#include<ctype.h>
+
+char a[100], b[100];
+
+void encrypt(char p[])
+{
+    int n = strlen(p);
+    for(int i=0, j=0; j<(n+1)/2; i+=2, j++)
+        a[j] = p[i];
+
+    for(int i=1, j=(n+1)/2; j<n; i+=2, j++)
+        a[j] = p[i];
+
+    for(int i=0; i<n; i++)
+        a[i] = toupper(a[i]);
+}
+
+void decrypt(char c[])
+{
+    int n = strlen(c);
+
+    for(int i=0, j=0; i<(n+1)/2; i++, j+=2)
+        b[j] = c[i];
+    for(int i=(n+1)/2, j=1; j<n; i++, j+=2)
+        b[j] = c[i];
+
+    for(int i=0; i<n; i++)
+        b[i] = tolower(b[i]);
+}
+
+int main()
+{
+    char p[100], c[100], d[100];
+    printf("Enter the plaintext: ");
+    scanf("%s", p);
+
+    encrypt(p);
+    strcpy(c, a);
+    printf("Ciphertext: %s\n", c);
+
+    decrypt(c);
+    strcpy(d, b);
+    printf("Plaintext: %s\n", d);
+
+    return 0;
+
+}
+
+
+Kedddddddddddddddddddddd
+#include<bits/stdc++.h>
+using namespace std;
+int bog=-1;
+string en(string p,int k[5]){
+
+    string cipher="";
+    int n=p.size();
+
+
+    if(n%5!=0){
+            bog=5-(n%5);
+            for(int i=0;i<bog;i++){
+                p+="z";
+                n++;
+            }
+    }
+
+
+    for(int i=0;i<n;i+=5){
+        for(int j=0;j<5;j++){
+            cipher+=p[i+k[j]-1];
+        }
+    }
+    return cipher;
+
+}
+string deciph(string cipher,int k[5]){
+
+    int newk[5];
+    for(int i=0;i<5;i++){
+        newk[k[i]-1]=i+1;
+    }
+    string de=en(cipher,newk);
+    return de;
+
+
+}
+
+int main(){
+
+    string plain,cipher,decipher;
+    cout<<"enter PlainText: ";
+    cin>>plain;
+    int k[5]={3,1,4,5,2};
+
+    cipher=en(plain,k);
+    cout<< "the cipher: "<<cipher;
+    decipher=deciph(cipher,k);
+    cout<<" the decipher: "<<decipher;
+
+}
+
+
+
+Combineeeeeeeeeeeeee
+---------]
+
+#include<stdio.h>
+#include<string.h>
+#include<ctype.h>
+#include<math.h>
+
+char a[100], b[100];
+
+void encrypt(char p[], int k[], int nk)
+{
+    int n = strlen(p);
+    int row = ceil((double)n/nk), col = nk;
+
+    char mat[row][col];
+    for(int i=0, l=0; i<row; i++){
+        for(int j=0; j<col; j++){
+
+            if(p[l] == '\0'){
+                mat[i][j] = 'z';
+                continue;
+            }
+            mat[i][j] = p[l];
+            l++;
+        }
+    }
+
+    for(int j=0, l=0; j<col; j++)
+        for(int i=0; i<row; i++, l++)
+            a[l] = mat[i][k[j]-1];
+
+    n = row*col;
+    for(int i=0; i<n; i++)
+        a[i] = toupper(a[i]);
+}
+
+void decrypt(char c[], int k[], int nk)
+{
+    int n = strlen(c);
+    int newk[nk];
+
+    for(int i=0; i<nk; i++)
+        newk[k[i]-1] = i+1;
+
+    int row = ceil((double)n/nk), col = nk;
+
+    char mat[row][col];
+    for(int j=0, l=0; j<col; j++){
+        for(int i=0; i<row; i++){
+
+            mat[i][j] = c[l];
+            l++;
+        }
+    }
+
+    for(int i=0, l=0; i<row; i++)
+        for(int j=0; j<col; j++, l++)
+            b[l] += mat[i][newk[j]-1];
+
+    for(int i=0; i<n; i++)
+        b[i] = tolower(b[i]);
+}
+
+int main()
+{
+    char p[100], c[100], d[100];
+    printf("Enter the plaintext: ");
+    scanf("%s", p);
+
+    int k[] = {3, 1, 4, 5, 2};
+    int nk = 5;
+
+    encrypt(p, k, nk);
+    strcpy(c, a);
+    printf("Ciphertext: %s\n", c);
+
+    decrypt(c, k, nk);
+    strcpy(d, b);
+    printf("Plaintext: %s\n", d);
+
+    return 0;
+}
+
+
+
+RSARSA
+76% of storage used … If you run out, you won't have enough storage to create, edit, and upload files. Get 100 GB of storage for BDT 150.00 BDT 38.00 for 1 month.
+12_rsa_[not-file].c
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+int N = 250, pn = 0, n, pubK, prK;
+int prime[100];
+int a[1000];
+char b[1000];
+
+void prGen()
+{
+    int isp[1000];
+    for(int i=0; i<N; i++)
+        isp[i] = 1;
+
+    for(int i=2; i<N; i++)
+        for(int j=2*i; j<N; j+=i)
+            isp[j] = 0;
+    for(int i=0; i<N; i++)
+    {
+        if(isp[i] == 1)
+            prime[pn++] = i;
+    }
+}
+
+int randPr()
+{
+    int k = rand() % pn;
+    return prime[k];
+}
+
+int gcd(int x, int y) {
+    if (y == 0)
+        return x;
+    return gcd(y, x % y);
+}
+
+void keys()
+{
+    int p1 = randPr(), p2 = randPr();
+
+    n = p1*p2;
+    int fi = (p1-1)*(p2-1);
+
+    int e = 2, d = 2;
+
+    while(gcd(e, fi) != 1)
+        e++;
+    pubK = e;
+
+    while((d*e) % fi != 1)
+        d++;
+    prK = d;
+}
+
+int encrypt(int p)
+{
+    int enc = 1, e = pubK;
+    while(e--)
+        enc = (enc*p) % n;
+
+    return enc;
+}
+
+void encoder(char p[], int l)
+{
+    for(int i=0; i<l; i++)
+        a[i] = encrypt(p[i]);
+}
+
+int decrypt(int a)
+{
+    int dec = 1, d = prK;
+    while(d--)
+        dec = (dec*a) % n;
+
+    return dec;
+}
+
+void decoder(int a[], int l)
+{
+    for(int i=0; i<l; i++)
+        b[i] = decrypt(a[i]);
+}
+
+int main()
+{
+    prGen();
+    keys();
+    char p[1000], c[1000], d[1000];
+    printf("Enter the plaintext: ");
+    scanf("%s", p);
+
+    int l = strlen(p);
+
+    encoder(p, l);
+    printf("Ciphertext: ");
+    for(int i=0; i<l; i++)
+        printf("%d", a[i]);
+
+    decoder(a, l);
+    printf("\nPlaintext: %s\n", b);
+
+    return 0;
+}
+
+Hill HIlllllllllllllllllllll
+#include<stdio.h>
+#include<string.h>
+
+char a[100], b[100];
+
+int modInv(int a)
+{
+    a = a % 26;
+    for(int i=1; i<26; i++)
+    {
+        if((a*i) % 26 == 1)
+            return i;
+    }
+    return -1;
+}
+
+int det(int mat[][2])
+{
+    return mat[0][0]*mat[1][1] - mat[0][1]*mat[1][0];
+}
+
+void encrypt(char p[], int mat[][2])
+{
+    int n = strlen(p);
+    if(n % 2 == 1)
+    {
+        p[n] = 'z';
+        n++;
+    }
+
+    for(int i=0; i<n; i+=2)
+    {
+        int m = p[i] - 'a';
+        int n = p[i+1] - 'a';
+        int x = (m*mat[0][0] + n*mat[1][0]) % 26;
+        int y = (m*mat[0][1] + n*mat[1][1]) % 26;
+        a[i] = (x + 'A');
+        a[i+1] = (y + 'A');
+    }
+}
+
+void decrypt(char c[], int mat[2][2])
+{
+    int deter = det(mat);
+    int invDet = modInv(deter);
+
+    int invMat[2][2];
+    invMat[0][0] = (mat[1][1] * invDet) % 26;
+    invMat[0][1] = (((-1) * (mat[0][1] * invDet) % 26) + 26) % 26;
+    invMat[1][0] = (((-1) * (mat[1][0] * invDet) % 26) + 26) % 26;
+    invMat[1][1] = (mat[0][0] * invDet) % 26;
+
+    int n = strlen(c);
+    for(int i=0; i<n; i+=2)
+    {
+        int m = c[i] - 'A';
+        int n = c[i+1] - 'A';
+        int x = (m*invMat[0][0] + n*invMat[1][0]) % 26;
+        int y = (m*invMat[0][1] + n*invMat[1][1]) % 26;
+        b[i] = (x + 'a');
+        b[i+1] = (y + 'a');
+    }
+}
+
+int main()
+{
+    char p[100], c[100], d[100];
+    printf("Enter the plaintext: ");
+    scanf("%s", p);
+
+    int mat[2][2];
+    printf("Enter the 2x2 matrix:\n");
+    for(int i=0; i<2; i++)
+        for(int j=0; j<2; j++)
+            scanf("%d", &mat[i][j]);
+
+    if(det(mat) == 0 || modInv(det(mat)) == -1)
+    {
+        printf("Matrix is not valid.\n");
+        return 0;
+    }
+
+    encrypt(p, mat);
+    strcpy(c, a);
+    printf("Ciphertext: %s\n", c);
+
+    decrypt(c, mat);
+    strcpy(d, b);
+    printf("Plaintext: %s\n", d);
+
+    return 0;
+}
+
+
+Playfair
+#include<stdio.h>
+#include<string.h>
+#include<ctype.h>
+
+char a[100], b[100];
+int row, col;
+
+void findPos(char mat[][5], char ch)
+{
+    if(ch == 'J')
+        ch = 'I';
+    for(row=0; row<5; row++)
+    {
+        for(col=0; col<5; col++)
+        {
+            if(mat[row][col] == ch)
+                return;
+        }
+    }
+}
+
+void encrypt(char p[], char mat[5][5])
+{
+    char ch1, ch2;
+    int n = strlen(p), l = 0;
+    for(int i=0; i<n; i+=2)
+    {
+        if(i+1 == n){
+            p[n] = 'X';
+            n++;
+        }
+        ch1 = toupper(p[i]);
+        ch2 = toupper(p[i+1]);
+
+        if(ch1 == ch2)
+        {
+            ch2 = 'X';
+            i--;
+        }
+
+        int row1, row2, col1, col2;
+        findPos(mat, ch1);
+        row1 = row, col1 = col;
+        findPos(mat, ch2);
+        row2 = row, col2 = col;
+
+
+        if(row1 == row2)
+        {
+            col1 = (col1 + 1) % 5;
+            col2 = (col2 + 1) % 5;
+        }
+        else if(col1 == col2)
+        {
+            row1 = (row1 + 1) % 5;
+            row2 = (row2 + 1) % 5;
+        }
+        else
+        {
+            int temp = col1;
+            col1 = col2;
+            col2 = temp;
+        }
+        a[l] = mat[row1][col1];
+        a[l+1] = mat[row2][col2];
+        l+=2;
+    }
+}
+
+void decrypt(char c[], char mat[5][5])
+{
+    char ch1, ch2;
+    int n = strlen(c), l = 0;
+    for(int i=0; i<n; i+=2)
+    {
+        ch1 = toupper(c[i]);
+        ch2 = toupper(c[i+1]);
+
+        int row1, row2, col1, col2;
+        findPos(mat, ch1);
+        row1 = row, col1 = col;
+        findPos(mat, ch2);
+        row2 = row, col2 = col;
+
+
+        if(row1 == row2)
+        {
+            col1 = (col1 - 1 + 5 ) % 5;
+            col2 = (col2 - 1 + 5) % 5;
+        }
+        else if(col1 == col2)
+        {
+            row1 = (row1 - 1) % 5;
+            row2 = (row2 - 1) % 5;
+        }
+        else
+        {
+            int temp = col1;
+            col1 = col2;
+            col2 = temp;
+        }
+        b[l] = mat[row1][col1] - 'A' + 'a';
+        b[l+1] = mat[row2][col2] - 'A' + 'a';
+        l+=2;
+    }
+}
+
+int main()
+{
+    freopen("Input.txt", "r", stdin);
+    char p[100], c[100], d[100], mat[5][5];
+
+    for(int i=0; i<5; i++)
+        for(int j=0; j<5; j++)
+            scanf("%c ", &mat[i][j]);
+
+    scanf("%s", p);
+
+    encrypt(p, mat);
+    strcpy(c, a);
+    printf("Ciphertext: %s\n", c);
+
+    decrypt(c, mat);
+    strcpy(d, b);
+    printf("Plaintext: %s\n", d);
+
+    return 0;
+}
