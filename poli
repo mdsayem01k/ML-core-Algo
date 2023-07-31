@@ -1,0 +1,100 @@
+edge(a,b).
+edge(b,c).
+edge(c,d).
+edge(d,e).
+edge(e,b).
+path(A,B):-edge(_,B), edge(A,_),nextRoute(A,B,[]), write(B).
+nextRoute(A,B,V) :-
+    edge(A,X), write(A), write('->'),
+    not(member(X,B)) ,
+    ( B = X;
+    nextRoute(X,B,[A|V]);
+    write(X)).
+
+
+
+
+    edges(a, b).
+edges(a, c).
+edges(b, c).
+edges(b, d).
+edges(c, d).
+edges(d, e).
+edges(e, f).
+
+bfs(Start, Goal, Path) :-
+    bfs_queue([[Start]], Goal, RevPath),
+    reverse(RevPath, Path).
+
+bfs_queue([[Node|Path]|_], Node, [Node|Path]).
+bfs_queue([[Node|Path]|Rest], Goal, FinalPath) :-
+    findall([Next, Node|Path],
+            (edges(Node, Next), \+ member(Next, [Node|Path])),
+            NextPaths),
+    append(Rest, NextPaths, UpdatedQueue),
+    bfs_queue(UpdatedQueue, Goal, FinalPath).
+bfs_queue([_|Rest], Goal, Path) :-
+    bfs_queue(Rest, Goal, Path).
+
+
+    edges(a, b).
+edges(a, c).
+edges(b, c).
+edges(b, d).
+edges(c, d).
+edges(d, e).
+edges(e, f).
+
+dfs(Start, Goal, Path) :-
+    dfs_helper(Start, Goal, [Start], Path).
+
+dfs_helper(Goal, Goal, AccPath, Path) :- reverse(AccPath, Path).
+dfs_helper(Node, Goal, AccPath, Path) :-
+    edges(Node, Next),
+    \+ member(Next, AccPath),
+    dfs_helper(Next, Goal, [Next|AccPath], Path).
+
+
+
+
+    % Define the directed graph as a set of edges with corresponding costs
+% For example, edges(a, b, 1) means there is a directed edge from a to b with cost 1
+edges(a, b, 1).
+edges(a, c, 2).
+edges(b, c, 3).
+edges(b, d, 4).
+edges(c, d, 5).
+edges(d, e, 6).
+edges(e, f, 7).
+
+% Heuristic function: Estimate the cost from a node to the goal (this is problem-specific)
+heuristic(a, f, 10).
+
+% A* search algorithm
+a_star(Start, Goal, Path) :-
+    astar_search([[(0, Start)]], Goal, Path).
+
+% Helper predicate for A* search using a priority queue
+astar_search([(_, Node) | _], Node, Path) :- !.
+astar_search([Path | Rest], Goal, FinalPath) :-
+    Path = [(_, Node) | _],
+    findall((HeuristicCost + NewCost, Next),
+            (edges(Node, Next, StepCost),
+            NewCost is Cost + StepCost,
+            heuristic(Next, Goal, HeuristicCost),
+            \+ member(Next, Path)),
+            NextPaths),
+    append(NextPaths, Rest, UpdatedQueue),
+    keysort(UpdatedQueue, SortedQueue),
+    astar_search(SortedQueue, Goal, FinalPath).
+
+% Example usage
+main :-
+    Start = a,
+    Goal = f,
+    a_star(Start, Goal, Path),
+    reverse(Path, PathInOrder),
+    format("A* Path from ~w to ~w: ~w~n", [Start, Goal, PathInOrder]).
+
+% Run the program
+:- initialization(main).
