@@ -1,100 +1,711 @@
-edge(a,b).
-edge(b,c).
-edge(c,d).
-edge(d,e).
-edge(e,b).
-path(A,B):-edge(_,B), edge(A,_),nextRoute(A,B,[]), write(B).
-nextRoute(A,B,V) :-
-    edge(A,X), write(A), write('->'),
-    not(member(X,B)) ,
-    ( B = X;
-    nextRoute(X,B,[A|V]);
-    write(X)).
+#include<bits/stdc++.h>         // উপরের এই 3 line সব code
+#include<graphics.h>                // এর জন্য same
+using namespace std;
+int main()
+{
+    int gd = DETECT, gm;                    // এই 2 line-ও সব code
+    initgraph(&gd, &gm, (char*)"");               // এর জন্য same
+
+    int x1, y1, x2, y2, x, y, c = 15;       // line এর ২টা endpoint এর coordinates (x1, y1),
+                                                // (x2, y2) আর color (15 = WHITE)
+    cout << "Enter starting coordinates (x1, y1): ";
+    cin >> x1 >> y1;
+    cout << "Enter ending coordinates (x2, y2): ";
+    cin >> x2 >> y2;
+
+    int h = getmaxy();                      // Graphics এর window-টার height, y-axis নিচ থেকে উপরে হিসাব করার জন্য দরকার হয়
+    float m= float(y2-y1) / float(x2-x1);       // Direction equation -> y = mx+b, এর m 
+    float b = y1 - (m * x1);                // Equation এর b
+    x = x1;             // New point x, y দুইটা রে initialize করলাম
+    y = y1;
+
+    for(x=x1; x<=x2; x++)           // যতক্ষণ না 2nd end point reach করে
+    {
+        y = int(m*x) + b;           // equation থেকে y calculate
+        putpixel(x, h-y, c);            // (x, y) point-এ color set করলাম, কিন্ত window height-টা থেকে subtract করে
+        delay(20);                      // কারন, Graphis এর window তে, y-axis উপর থেকে নিচে, কিন্তু আমরা tradionally 
+    }                                         // y-axis নিচ থেকে উপরেই দেখি
+
+    getch();                        // Graphics এর window-টা এই line এর জন্য আটকে থাকবে, নাই হয়ে যাবে না
+    closegraph();
+
+    return 0;
+}
 
 
 
 
-    edges(a, b).
-edges(a, c).
-edges(b, c).
-edges(b, d).
-edges(c, d).
-edges(d, e).
-edges(e, f).
-
-bfs(Start, Goal, Path) :-
-    bfs_queue([[Start]], Goal, RevPath),
-    reverse(RevPath, Path).
-
-bfs_queue([[Node|Path]|_], Node, [Node|Path]).
-bfs_queue([[Node|Path]|Rest], Goal, FinalPath) :-
-    findall([Next, Node|Path],
-            (edges(Node, Next), \+ member(Next, [Node|Path])),
-            NextPaths),
-    append(Rest, NextPaths, UpdatedQueue),
-    bfs_queue(UpdatedQueue, Goal, FinalPath).
-bfs_queue([_|Rest], Goal, Path) :-
-    bfs_queue(Rest, Goal, Path).
-
-
-    edges(a, b).
-edges(a, c).
-edges(b, c).
-edges(b, d).
-edges(c, d).
-edges(d, e).
-edges(e, f).
-
-dfs(Start, Goal, Path) :-
-    dfs_helper(Start, Goal, [Start], Path).
-
-dfs_helper(Goal, Goal, AccPath, Path) :- reverse(AccPath, Path).
-dfs_helper(Node, Goal, AccPath, Path) :-
-    edges(Node, Next),
-    \+ member(Next, AccPath),
-    dfs_helper(Next, Goal, [Next|AccPath], Path).
 
 
 
 
-    % Define the directed graph as a set of edges with corresponding costs
-% For example, edges(a, b, 1) means there is a directed edge from a to b with cost 1
-edges(a, b, 1).
-edges(a, c, 2).
-edges(b, c, 3).
-edges(b, d, 4).
-edges(c, d, 5).
-edges(d, e, 6).
-edges(e, f, 7).
 
-% Heuristic function: Estimate the cost from a node to the goal (this is problem-specific)
-heuristic(a, f, 10).
 
-% A* search algorithm
-a_star(Start, Goal, Path) :-
-    astar_search([[(0, Start)]], Goal, Path).
+Ddddddddddddddddddddddddddd
+#include<bits/stdc++.h>             // উপরের এই 3 line সব code
+#include<graphics.h>                    // এর জন্য same
 
-% Helper predicate for A* search using a priority queue
-astar_search([(_, Node) | _], Node, Path) :- !.
-astar_search([Path | Rest], Goal, FinalPath) :-
-    Path = [(_, Node) | _],
-    findall((HeuristicCost + NewCost, Next),
-            (edges(Node, Next, StepCost),
-            NewCost is Cost + StepCost,
-            heuristic(Next, Goal, HeuristicCost),
-            \+ member(Next, Path)),
-            NextPaths),
-    append(NextPaths, Rest, UpdatedQueue),
-    keysort(UpdatedQueue, SortedQueue),
-    astar_search(SortedQueue, Goal, FinalPath).
+using namespace std;
 
-% Example usage
-main :-
-    Start = a,
-    Goal = f,
-    a_star(Start, Goal, Path),
-    reverse(Path, PathInOrder),
-    format("A* Path from ~w to ~w: ~w~n", [Start, Goal, PathInOrder]).
+int main()
+{
+    int gd = DETECT, gm;                    // এই 2 line-ও সব code
+    initgraph(&gd, &gm, (char*)"");             // এর জন্য same
 
-% Run the program
-:- initialization(main).
+    int x1, y1, x2, y2, x, y, c = 15;           // line এর ২টা endpoint এর coordinates (x1, y1),
+                                                        // (x2, y2) আর color (15 = WHITE)
+    cout << "Enter starting coordinates (x1, y1): ";
+    cin >> x1 >> y1;
+    cout << "Enter ending coordinates (x2, y2): ";
+    cin >> x2 >> y2;
+
+    int h = getmaxy();                          // Graphics এর window-টার height, y-axis নিচ থেকে উপরে হিসাব করার জন্য দরকার হয়
+    float m= float(y2-y1) / float(x2-x1);           // slope
+    x = x1;                 // New point x, y দুইটা রে initialize করলাম
+    y = y1;
+                        // নিচের part-টুকু একেবারে DDA algorithm এর মতো
+    if(m <= 1)              
+    {
+        int step = x2 - x1;         
+        float y_fl = y;                 // y এর int-value দিয়ে pixel set করবো, 
+        for(int k=0; k<=step; k++)          // কিন্তু calculate করতে float-value store করা লাগবে
+        {
+            putpixel(x, h-y, c);            // (x, y) point-এই color set করছি, কিন্তু y যেন নিচ থেকে show করে
+            x++;                                // এই জন্য window-height থেকে subtract করছি
+            y_fl = y_fl + m;                // y এর float-value-র সাথে যোগ করবো m
+            y = y_fl;                           // কিন্তু pixel set করবো int-value দিয়ে
+            delay(20);
+        }
+    }
+    else                            // এই block এর কাহিনি উপরের block এর মতোই
+    {
+        float invSlope = 1 / m;
+        int step = y2 - y1;
+        float x_fl = x;
+        for(int k=0; k<=step; k++)
+        {
+            putpixel(x, h-y, c);
+            y++;
+            x_fl = x_fl + invSlope;
+            x = x_fl;
+            delay(20);
+        }
+    }
+
+    getch();
+    closegraph();
+
+    return 0;
+}
+
+--------------------------------
+Bresenhaammmmmmmmmmmmmmmmm
+
+#include<bits/stdc++.h>
+#include<graphics.h>
+
+using namespace std;
+
+int main()
+{
+    int gd = DETECT, gm;
+    initgraph(&gd, &gm, (char*)"");
+
+    int x1, y1, x2, y2, x, y, c = 15, d, dx, dy;        // line এর ২টা endpoint এর coordinates (x1, y1),
+                                                            // (x2, y2) আর color (15 = WHITE)
+    cout << "Enter starting coordinates (x1, y1): ";
+    cin >> x1 >> y1;
+    cout << "Enter ending coordinates (x2, y2): ";
+    cin >> x2 >> y2;
+
+    int h = getmaxy();          // Graphics এর window-টার height
+    x = x1;
+    y = y1;                 // নিচের code section Bresenham এর algorithm এর মতো
+
+    dx = x2 - x1;           // Delta-x আর Delta-y
+    dy = y2 - y1;
+
+    d = (2*dy) - dx;        // Decision parameter, D1
+
+    while(x <= x2)              // যতক্ষণ না 2nd end point reach করে
+    {
+        putpixel(x, h-y, c);        // (x, y) point-এই color set করছি, কিন্তু y যেন নিচ থেকে show করে
+        delay(20);                      // এই জন্য window-height থেকে subtract করছি
+
+        x++;                    // x সবসময় ১ করে increase করবে
+        if(d < 0)
+        {                       // Decision parameter 0-এর ছোট হলে, bottom pixel হবে
+            d = d + (2*dy);         // y same থাকবে
+        }
+        else                    // Decision parameter 0-এর বড় হলে, top pixel হবে
+        {                            // y বাড়বে
+            y++;
+            d = d + (2*(dy - dx));
+        }
+    }
+
+    getch();
+    closegraph();
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+----
+Circe           direct
+-----------
+#include<bits/stdc++.h>
+#include<graphics.h>
+
+using namespace std;
+
+void circle_sym(int x, int y, int h, int k, int c)      // Circle 8টা symmetric point draw করার function
+{
+    putpixel(h+x, k+y, c);          // প্রথম ৪টা, আর পরের ৪টা same
+    putpixel(h+y, k+x, c);              // শুধু x,y এর sign-টা উল্টা
+    putpixel(h-y, k+x, c);
+    putpixel(h-x, k+y, c);          // সব point-এ center add করা লাগে
+    putpixel(h-x, k-y, c);              // Algorithm থেকে different 
+    putpixel(h-y, k-x, c);
+    putpixel(h+y, k-x, c);
+    putpixel(h+x, k-y, c);
+}
+
+int main()
+{
+    int gd = DETECT, gm;
+    initgraph(&gd, &gm, (char*)"");
+
+    int r, x, y, h, k, OA;
+
+    cout << "Enter the co-ordinate of Circle's Center (h,k): ";
+    cin >> h >> k;                                 // Circle এর center (h,k)
+
+    cout << "Enter the radius: ";
+    cin >> r;
+
+    OA = r / sqrt(2);               // পিথাগোরাস apply করে 45-degree-র জন্য ভূমির value
+
+    for(x=0; x<=OA; x++)            // যতক্ষণ না x ভুমির সমান হয়
+    {
+        y = sqrt(r*r - x*x);        // Circle এর formula থেকে y
+
+        circle_sym(x, y, h, k, 12);     // Circle এর ৮টা symmetric point draw করার function
+        delay(20);
+    }
+
+    getch();
+    closegraph();
+
+    return 0;
+}
+
+
+
+
+------------------- 
+Bresebnhamd
+
+
+#include<bits/stdc++.h>
+#include<graphics.h>
+
+using namespace std;
+
+void circle_sym(int x, int y, int h, int k, int c)      // Circle 8টা symmetric point draw করার function
+{
+    putpixel(h+x, k+y, c);
+    putpixel(h+y, k+x, c);
+    putpixel(h-y, k+x, c);
+    putpixel(h-x, k+y, c);
+    putpixel(h-x, k-y, c);
+    putpixel(h-y, k-x, c);
+    putpixel(h+y, k-x, c);
+    putpixel(h+x, k-y, c);
+}
+
+int main()
+{
+    int gd = DETECT, gm;
+    initgraph(&gd, &gm, (char*)"");
+
+    int r, x, y, h, k, d;
+
+    cout << "Enter the co-ordinate of Circle's Center (h,k): ";
+    cin >> h >> k;
+
+    cout << "Enter the radius: ";
+    cin >> r;
+                                // নিচের code section হুবহু alorithm এর মতো
+    x = 0;
+    y = r;
+    d = 3 - r;              // Decision paramter initialized
+
+    while(x <= y)
+    {
+        circle_sym(x, y, h, k, 12);
+        delay(20);
+
+        if(d < 0)               // Decision parameter 0-এর ছোট হলে, top pixel
+        {                           // y change হবে না
+            d = d + (4*x) + 6;
+        }
+        else                            // ছোট না হলে, bottom pixel
+        {                                   // y change হবে
+            d = d + (4*(x-y)) + 10;
+            y--;                        // y কমতে থাকবে
+        }
+        x++;
+    }
+
+    getch();
+    closegraph();
+
+    return 0;
+}
+
+
+
+
+
+Circle----rotation
+
+#include<bits/stdc++.h>
+#include<graphics.h>
+
+using namespace std;
+
+int main()
+{
+    int r, x, y, h, k;
+    float pi = 3.1416, theta, th = 0, d_th = pi / 180;              // th 0 থেকে theta পর্যন্ত যাবে
+                                                                        // Delta-th (d_th) হচ্ছে ১-degree, but radian-এ convert করা
+    cout << "Enter the co-ordinate of Circle's Center (h,k): ";
+    cin >> h >> k;
+
+    cout << "Enter the radius: ";
+    cin >> r;
+
+    int gd = DETECT, gm;
+    initgraph(&gd, &gm, (char*)"");
+
+    int height = getmaxy();
+    circle(h, k, r);             // Original Circle টা draw করলাম আগে
+
+    cout << "Enter the rotation angle (theta): ";
+    cin >> theta;
+
+    theta = theta * (pi / 180);         // Theta degree তে input নিছিলাম, এইটা কে radian-এ convert করলাম
+    x = h;
+    y = k;
+
+    while(th <= theta)              // th এর মান 0 থেকে theta পর্যন্ত যাবে, for example 0 থেকে 45-degree-র radian-value পর্যন্ত
+    {
+        cleardevice();                  // প্রতিবার নতুন position-এ নতুন circle draw হবে, তাই আগের সব কিছু clear করা লাগবে
+        circle(x, y, r);         // (x, y) cooridate-এ নতুন circle draw করলাম
+        circle(h, k, r);             // (h, k) coordinate-এ original circle draw করলাম
+        line(x, y, 0, 0);       // (0, 0) বা (0, h) বা origin থেকে নতুন circle এর center (x, y) বরাবর line টানলাম
+        line(h, k, 0, 0);    // (0, 0) বা (0, h) বা origin থেকে original circle এর center (h, k) বরাবর line টানলাম
+        delay(100);
+
+        th = th + d_th;                 // th এর value increase করলাম 1-degree করে, I mean 1-degree-র radian-value পরিমান
+        x = h*cos(th) - k*sin(th);          // Rotation এর formula এইটা
+        y = h*sin(th) + k*cos(th);      // Original circle এর center (h, k) প্রতিবার rotate করবে th amount
+    }
+
+    getch();
+    closegraph();
+
+    return 0;
+}
+
+--------- -------------------------------
+Cicle translation
+-------------------- ------------------------------
+#include<bits/stdc++.h>
+#include<graphics.h>
+using namespace std;
+
+void translate_circle(int h, int k, int x, int y, int r)
+{                                                 // Translate করলে, original আর নতুন ২টা circle-ই draw হবে   
+    int height = getmaxy();                             
+
+    cleardevice();                              // প্রতিবার নতুন circle draw হইতেছে, তাই আগের গুলা সব clear করা লাগবে
+    circle(x, height-y, r);                     // নতুন tranlated center-এ (x, y) circle draw    
+    circle(h, height-k, r);                         // Original (h, k) center-এ circle draw
+    line(x, height-y, h, height-k);             // Circle 2টার center (x, y) আর (h, k) এর মধ্যে একটা line draw করলাম     
+    delay(20);                                      // Translation বুঝতে help হবে
+}
+
+int main()
+{
+    int h, k, x, y, r, tx, ty;
+    cout << "Enter the Coordinates of the Circle's Center (h,k): ";
+    cin >> h >> k;
+    cout << "Enter the radius of the Circle: ";
+    cin >> r;
+
+    int gd = DETECT, gm;
+    initgraph(&gd, &gm, (char*)"");
+
+    int height = getmaxy();
+
+    circle(h, height-k, r);             // Original Circle টা draw করলাম আগে
+
+    cout << "Enter Translation Value of the Circle (tx,ty): ";
+    cin >> tx >> ty;
+
+    x = h;
+    y = k;
+
+    for(x=h; x<=h+tx; x++)              // x এর value original circle এর h থেকে start করে h+tx পর্যন্ত যাবে
+    {                                           // তার মানে আগে x-axis বরাবর translation হবে
+        translate_circle(h, k, x, y, r);       // x এর value increase করবে প্রতিবার, so প্রতিবার এইটা নতুন translate center
+    }                                               // Function call দিয়ে draw করলেই হবে
+
+    for(y=k; y<=k+ty; y++)              // এইবার y-axis বরাবর translation হবে
+    {
+        translate_circle(h, k, x, y, r);
+    }
+
+    getch();
+    closegraph();
+
+    return 0;
+}
+
+------------------------ -                          ----------------------------
+Triangle translation
+------------------------- ---------------
+#include<bits/stdc++.h>
+#include<graphics.h>
+using namespace std;
+
+void triangle(int x1, int y1, int x2, int y2, int x3, int y3)
+{                                                       // Triangle draw করার built-in function nai,
+    line(x1,y1,x2,y2);
+    line(x2,y2,x3,y3);
+    line(x1,y1,x3,y3);            // y-value গুলা window-height থেকে বাদ দিলে, figure টা নিচে draw হবে, এই যা
+}
+
+void translate_tri(int x1, int y1, int x2, int y2, int x3, int y3, int x1_, int y1_, int x2_, int y2_, int x3_, int y3_)
+{                                                           // Triangle translation-এ original triangle-এর ৩টা point, আর নতুন triangle এর ৩টা point লাগবে
+                    // Triangle draw করার user-defined fucntion টা call করলেই হবে
+    delay(20);
+}
+
+int main()
+{
+    int x1, y1, x2, y2, x3, y3, x1_, y1_, x2_, y2_, x3_, y3_, tx, ty;
+    cout << "Enter the Coordinates of the Triangle's Vertex-1 (x1,y1): ";
+    cin >> x1 >> y1;
+    cout << "Enter the Coordinates of the Triangle's Vertex-2 (x2,y2): ";
+    cin >> x2 >> y2;
+    cout << "Enter the Coordinates of the Triangle's Vertex-3 (x3,y3): ";
+    cin >> x3 >> y3;
+
+    int gd = DETECT, gm;
+    initgraph(&gd, &gm, (char*)"");
+
+    triangle(x1, y1, x2, y2, x3, y3);           // Original triangle টা draw করলাম আগে
+
+    cout << "Enter Translation Value of the Triangle (tx,ty): ";
+    cin >> tx >> ty;
+    x1_=x1;x2_=x2;
+
+
+
+    getch();
+    closegraph();
+
+    return 0;
+}
+
+------------------------ 
+Triangle rotation
+---------------------------- -------------------
+#include<bits/stdc++.h>
+#include<graphics.h>
+
+using namespace std;
+
+void triangle(int x1, int y1, int x2, int y2, int x3, int y3)
+{                                                   // Triangle draw করার built-in function nai,
+    int height = getmaxy();                                 // তাই একটা create করলাম
+
+    line(x1, height-y1, x2, height-y2);                 // কিছুই না, 6টা point দিয়ে 3টা line draw করার function শুধু
+    line(x1, height-y1, x3, height-y3);
+    line(x2, height-y2, x3, height-y3);                     // y-value গুলা window-height থেকে বাদ দিলে, figure টা নিচে draw হবে, এই যা
+}
+
+int main()
+{
+    int x1, y1, x2, y2, x3, y3, x1_, y1_, x2_, y2_, x3_, y3_, tx, ty;
+    float pi = 3.1416, theta, th = 0, d_th = pi / 180;                      // th 0 থেকে theta পর্যন্ত যাবে
+                                                                                // Delta-th (d_th) হচ্ছে ১-degree, but radian-এ convert করা
+    cout << "Enter the Coordinates of the Triangle's Vertex-1 (x1,y1): ";
+    cin >> x1 >> y1;
+    cout << "Enter the Coordinates of the Triangle's Vertex-2 (x2,y2): ";
+    cin >> x2 >> y2;
+    cout << "Enter the Coordinates of the Triangle's Vertex-3 (x3,y3): ";
+    cin >> x3 >> y3;
+
+    int gd = DETECT, gm;
+    initgraph(&gd, &gm, (char*)"");
+
+    triangle(x1, y1, x2, y2, x3, y3);               // নতুন triangle এর point গুলা ('_' দেওয়া) initialize করলাম
+
+    cout << "Enter the rotation angle (theta): ";
+    cin >> theta;
+
+    theta = theta * (pi / 180);             // Theta degree তে input নিছিলাম, এইটা কে radian-এ convert করলাম
+    x1_=x1, x2_=x2, x3_=x3;
+    y1_=y1, y2_=y2, y3_=y3;                     // নতুন triangle এর point গুলা ('_' দেওয়া) initialize করলাম
+    int height = getmaxy();
+
+    while(th <= theta)                      // th এর মান 0 থেকে theta পর্যন্ত যাবে, for example 0 থেকে 45-degree-র radian-value পর্যন্ত
+    {
+        cleardevice();                          // প্রতিবার নতুন position-এ নতুন triangle draw হবে, তাই আগের সব কিছু clear করা লাগবে
+        triangle(x1_, y1_, x2_, y2_, x3_, y3_);     // নতুন triangle draw করলাম
+        triangle(x1, y1, x2, y2, x3, y3);               // Original triangle draw করলাম
+        line(x1, height-y1, 0, height);             // (0, 0) বা (0, h) বা origin থেকে original triangle এর একটা end-point (x1, y1) বরাবর line টানলাম
+        line(x1_, height-y1_, 0, height);               // (0, 0) বা (0, h) বা origin থেকে নতুন triangle এর একটা end-point (x1_, y1_) বরাবর line টানলাম
+        delay(100);                                 // এইগুলা যেকোন order-এ draw করলেই হইলো, নতুন টা আগে, বা পরে, বা line-ই আগে, সমস্যা নাই
+
+        th = th + d_th;                         // th এর value increase করলাম 1-degree করে, I mean 1-degree-র radian-value পরিমান
+        x1_ = x1*cos(th) - y1*sin(th);
+        y1_ = x1*sin(th) + y1*cos(th);
+        x2_ = x2*cos(th) - y2*sin(th);          // Rotation এর formula এইটা
+        y2_ = x2*sin(th) + y2*cos(th);          // যেহেতু triangle-এ ৩টা point, তাই ৩টার জন্যই formula লেখা লাগবে
+        x3_ = x3*cos(th) - y3*sin(th);
+        y3_ = x3*sin(th) + y3*cos(th);          // Triangle এর প্রতিটা end-point প্রতিবার th amount করে rotate করবে
+    }
+
+    getch();
+    closegraph();
+
+    return 0;
+}
+
+
+
+----------------------------------------------------
+Floodfilllllllllllllllllllllllllllllllllllllllll
+--------------------------------------------------
+#include<bits/stdc++.h>
+#include<graphics.h>
+using namespace std;
+
+void floodFill(int x, int y, int oldColor, int newColor)            // Built-in একটা floodfill() function আছে, কিন্তু এইটা নিজেদের create করা
+{
+    if(getpixel(x, y) == oldColor)                      // getpixel() দিয়ে যেই color পাবো, সেইটা যদি আগের color-ই থাকে, আমাদের case-এ যদি এখনো black থাকে
+    {
+        putpixel(x, y, newColor);                       // তার মানে, এই pixel-এ নতুন color করতে হবে
+        floodFill(x+1, y, oldColor, newColor);
+        floodFill(x, y+1, oldColor, newColor);              // এই point color করা হয়ে গেলে, এইটার neighbouring 4 টা point-e যাবো, same function call দিয়ে
+        floodFill(x-1, y, oldColor, newColor);
+        floodFill(x, y-1, oldColor, newColor);
+    }
+}
+
+int main()
+{
+    int h, k, r;
+    cout << "Enter the Coordinates of the Circle's Center (h,k): ";     // Circle এর floodfill করবো, অন্য shape-ও use করা যায় চাইলে
+    cin >> h >> k;
+    cout << "Enter the radius of the Circle: ";
+    cin >> r;
+
+    int gd = DETECT, gm;
+    initgraph(&gd, &gm,"");
+
+    circle(h, k, r);                    // Circle-টা draw করলাম আগে, এখন circle এর border টা white color এর হবে default ভাবে
+                                            // আর Circle এর ভেতরে থাকবে black
+    floodFill(h, k, BLACK, MAGENTA);            // Floodfill function টা circle এর ভেতরে যেকোনো একটা point, আর background-color and new color দিয়ে call করা লাগবে
+
+    getch();
+    closegraph();
+
+    return 0;
+}
+
+
+------------------------------  
+Weller
+------------------------------ -------- 
+#include<bits/stdc++.h>
+#include<graphics.h>
+using namespace std;
+
+int main()
+{
+    int gd = DETECT, gm;
+    initgraph(&gd, &gm, (char*)"");
+
+    rectangle(100,100, 300,300);            // এই rectangle-টা হচ্ছে clipping-window
+    line(120,250,120,50);
+    line(120,50,180,200);                   // line দিয়ে একটা shape draw করলাম, যেইটা rectangle-এর বাইরেও যায়
+    line(180,200,280,50);
+    line(280,50,280,250);
+    line(280,250,120,250);
+
+
+    int x = 120, y = 200;           // একেবারে বাম পাশের line-এর একটা point থেকে tracing শুরু করলাম
+                                        // এইটা কিন্তু বাম পাশের line-থেকেই start করা লাগবে, নাহলে কাজ করবে না
+    putpixel(x, y, RED);                // Point-টাতে red color দিলাম
+    outtextxy(x+10, y, (char*)"Start");         // এইটা just বোঝার জন্য যে এইখান থেকে tracing শুরু হইছে, না দিলেও সমস্যা নাই
+    y = y - 1;              // y-value কমানো মানে কিন্তু নিচে না, উপরে যায়, হ্যাঁ, Graphics-এর window-র y-axis উল্টা
+
+    while(1)                // আজীবন loop ঘুরবে
+    {
+        putpixel(x, y, RED);                // প্রত্যেক new point-এ tracing বোঝানোর জন্য red color করা
+        if(getpixel(x-1,y+1) == WHITE)
+        {
+            x=x-1;
+            y=y+1;
+         }                              // একটা pixel এর total ৮টা neighbouring pixel থাকে
+        else if(getpixel(x,y+1) == WHITE)          // 4 টা উপরে-নিচে-ডানে-বামে
+        {                                           // আর 4 টা 4 কোনায়
+            y=y+1;
+        }                                       // এইজন্য এইখানে ৮টা condition দেওয়া ৮টা pixel এর জন্য
+        else if(getpixel(x+1,y+1) == WHITE)         // যেই pixel এর color WHITE পাবো, ওই pixel-এই যাওয়া লাগবে trace করে
+        {
+            x=x+1;                                  // এইজন্য condition-এ (x,y) এর যেই value-র জন্য color WHITE পাবো,
+            y=y+1;                                      // x আর y ওই value দিয়েই update হবে
+        }
+        else if(getpixel(x+1,y) == WHITE)
+        {
+            x=x+1;
+        }
+        else if(getpixel(x+1,y-1) == WHITE)
+        {
+            x=x+1;
+            y=y-1;
+        }
+        else if(getpixel(x,y-1) == WHITE)
+        {
+            y=y-1;
+        }
+        else if(getpixel(x,y-2) == WHITE)
+        {
+
+            y=y-2;
+        }
+        else if(getpixel(x-1,y-1) == WHITE)
+        {
+            x=x-1;
+            y=y-1;
+        }
+        else if(getpixel(x-1,y) == WHITE)
+        {
+            x=x-1;
+            y=y;
+        }
+        else if(getpixel(x-2,y) == WHITE)
+        {
+            x=x-2;
+            y=y;
+        }
+        else break;
+        delay(20);
+    }
+    outtextxy(x+10, y+30, (char*)"End");            // Start point এর মতো, এইটা End বোঝাবে
+
+    getch();
+    closegraph();
+
+    return 0;
+}
+
+------------------------------- -
+Z-
+----------------------------------
+#include<bits/stdc++.h>
+#include<graphics.h>
+using namespace std;
+
+int main()
+{
+    int gd = DETECT, gm;
+    initgraph(&gd, &gm, (char*)"");
+
+    rectangle(100,100, 300,300);            // এই rectangle-টা হচ্ছে clipping-window
+    line(120,250,120,50);
+    line(120,50,180,200);                   // line দিয়ে একটা shape draw করলাম, যেইটা rectangle-এর বাইরেও যায়
+    line(180,200,280,50);
+    line(280,50,280,250);
+    line(280,250,120,250);
+
+
+    int x = 120, y = 200;           // একেবারে বাম পাশের line-এর একটা point থেকে tracing শুরু করলাম
+                                        // এইটা কিন্তু বাম পাশের line-থেকেই start করা লাগবে, নাহলে কাজ করবে না
+    putpixel(x, y, RED);                // Point-টাতে red color দিলাম
+    outtextxy(x+10, y, (char*)"Start");         // এইটা just বোঝার জন্য যে এইখান থেকে tracing শুরু হইছে, না দিলেও সমস্যা নাই
+    y = y - 1;              // y-value কমানো মানে কিন্তু নিচে না, উপরে যায়, হ্যাঁ, Graphics-এর window-র y-axis উল্টা
+
+    while(1)                // আজীবন loop ঘুরবে
+    {
+        putpixel(x, y, RED);                // প্রত্যেক new point-এ tracing বোঝানোর জন্য red color করা
+        if(getpixel(x-1,y+1) == WHITE)
+        {
+            x=x-1;
+            y=y+1;
+         }                              // একটা pixel এর total ৮টা neighbouring pixel থাকে
+        else if(getpixel(x,y+1) == WHITE)          // 4 টা উপরে-নিচে-ডানে-বামে
+        {                                           // আর 4 টা 4 কোনায়
+            y=y+1;
+        }                                       // এইজন্য এইখানে ৮টা condition দেওয়া ৮টা pixel এর জন্য
+        else if(getpixel(x+1,y+1) == WHITE)         // যেই pixel এর color WHITE পাবো, ওই pixel-এই যাওয়া লাগবে trace করে
+        {
+            x=x+1;                                  // এইজন্য condition-এ (x,y) এর যেই value-র জন্য color WHITE পাবো,
+            y=y+1;                                      // x আর y ওই value দিয়েই update হবে
+        }
+        else if(getpixel(x+1,y) == WHITE)
+        {
+            x=x+1;
+        }
+        else if(getpixel(x+1,y-1) == WHITE)
+        {
+            x=x+1;
+            y=y-1;
+        }
+        else if(getpixel(x,y-1) == WHITE)
+        {
+            y=y-1;
+        }
+        else if(getpixel(x,y-2) == WHITE)
+        {
+
+            y=y-2;
+        }
+        else if(getpixel(x-1,y-1) == WHITE)
+        {
+            x=x-1;
+            y=y-1;
+        }
+        else if(getpixel(x-1,y) == WHITE)
+        {
+            x=x-1;
+            y=y;
+        }
+        else if(getpixel(x-2,y) == WHITE)
+        {
+            x=x-2;
+            y=y;
+        }
+        else break;
+        delay(20);
+    }
+    outtextxy(x+10, y+30, (char*)"End");            // Start point এর মতো, এইটা End বোঝাবে
+
+    getch();
+    closegraph();
+
+    return 0;
+}
