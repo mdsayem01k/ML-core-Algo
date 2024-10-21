@@ -23,7 +23,10 @@ cd your_repository
 
 # Install dependencies
 pip install -r requirements.txt
-Files
+
+# Usage
+Provide examples of how to run the project or specific scripts:
+# Files
 Here is a description of the main files in this repository:
 
 ann(using_external_dataset).py: Implementation of an artificial neural network using an external dataset.
@@ -33,7 +36,7 @@ data-preprocessing.py: Data preprocessing script that cleans and transforms data
 Contributing
 Contributions are welcome! If you'd like to contribute to the project, please follow these steps:
 
-Fork the repository.
+# Fork the repository.
 Create a new branch (git checkout -b feature/your-feature).
 Commit your changes (git commit -m 'Add a new feature').
 Push to the branch (git push origin feature/your-feature).
